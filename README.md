@@ -17,7 +17,7 @@ python trigger_vectorization.py \
   --vectorizationServiceUrl http://localhost:5001 \
   --url ..\vectorization-service\metadata-test.json \
   --jobId test_job_123 \
-  --clientsList client1 \
+  --clientsList '["client1"]' \
   --studyId study_12345
 ```
 
@@ -25,7 +25,7 @@ python trigger_vectorization.py \
 - `--vectorizationServiceUrl` - Vectorization service endpoint
 - `--url` - Dataset path (local file or URL) *(required in development mode)*
 - `--jobId` - Unique identifier for the job
-- `--clientsList` - List of client identifiers (e.g., client1 client2 client3)
+- `--clientsList` - List of client identifiers as JSON array (e.g., '["client1", "client2", "client3"]') - REQUIRED JSON FORMAT
 - `--studyId` - Study identifier *(required, used for Feature Extraction Tool API in production mode)*
 
 **✅ New Features**:
@@ -63,28 +63,28 @@ python test_centralized_logging.py
 
 ### Example Test Scenarios
 ```powershell
-# Test with valid dataset (Development Mode)
+# Test with valid dataset (Development Mode) - Single Client
 python trigger_vectorization.py \
   --vectorizationServiceUrl http://localhost:5001 \
   --url ../vectorization-service/metadata-test.json \
   --jobId test_valid \
-  --clientsList client1 \
+  --clientsList '["client1"]' \
   --studyId study_dev_123
 
-# Test error handling
+# Test Multi-Client Scenario
 python trigger_vectorization.py \
-  --vectorizationServiceUrl http://invalid:9999 \
-  --url nonexistent.json \
-  --jobId test_error \
-  --clientsList client1 \
-  --studyId study_error_123
+  --vectorizationServiceUrl http://localhost:5001 \
+  --url ../vectorization-service/metadata-test.json \
+  --jobId test_multi \
+  --clientsList '["ATH1", "ATH2", "ATH3"]' \
+  --studyId study_multi_123
 
 # Test Production Mode (requires PRODUCTION_MODE=true in vectorization-service)
 python trigger_vectorization.py \
   --vectorizationServiceUrl http://localhost:5001 \
   --studyId study_prod_123 \
   --jobId test_production \
-  --clientsList client1
+  --clientsList '["client1", "client2"]'
 ```
 
 ## 📄 Centralized Logging
